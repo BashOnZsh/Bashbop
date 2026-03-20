@@ -1,15 +1,15 @@
-# Equibop [<img src="/static/icon.png" width="225" align="right" alt="Equibop">](https://github.com/Equicord/Equibop)
+# Equibop [<img src="/static/icon.png" width="225" align="right" alt="Equibop">](https://github.com/BashOnZsh/Bashbop)
 
-[![Equicord](https://img.shields.io/badge/Equicord-grey?style=flat)](https://github.com/Equicord/Equicord)
-[![Tests](https://github.com/Equicord/Equibop/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/Equicord/Equibop/actions/workflows/test.yml)
-[![Discord](https://img.shields.io/discord/1173279886065029291.svg?color=768AD4&label=Discord&logo=discord&logoColor=white)](https://equicord.org/discord)
+[![Bashcord](https://img.shields.io/badge/Bashcord-grey?style=flat)](https://github.com/BashOnZsh/Bashcord)
+[![Tests](https://github.com/BashOnZsh/Bashbop/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/BashOnZsh/Bashbop/actions/workflows/test.yml)
+[![Discord](https://img.shields.io/discord/1173279886065029291.svg?color=768AD4&label=Discord&logo=discord&logoColor=white)](https://bashcord.org/discord)
 
 Equibop is a fork of [Vesktop](https://github.com/Vencord/Vesktop).
 
-You can join our [discord server](https://equicord.org/discord) for commits, changes, chat or even support.<br></br>
+You can join our [discord server](https://bashcord.org/discord) for commits, changes, chat or even support.<br></br>
 
 **Main features**:
-- Equicord preinstalled
+- Bashcord preinstalled
 - Much more lightweight and faster than the official Discord app
 - Linux Screenshare with sound & wayland
 - Much better privacy, since Discord has no access to your system
@@ -18,7 +18,7 @@ You can join our [discord server](https://equicord.org/discord) for commits, cha
 
 - Tray Customization with voice detection and notification badges
 - Command-line flags to toggle microphone and deafen status (Linux)
-- Custom Arguments from [this PR](https://github.com/Equicord/Equibop/pull/46)
+- Custom Arguments from [this PR](https://github.com/BashOnZsh/Bashbop/pull/46)
 - arRPC-bun with debug logging support https://github.com/Creationsss/arrpc-bun
 
 **Linux Note**:
@@ -31,15 +31,15 @@ You can join our [discord server](https://equicord.org/discord) for commits, cha
 # Equibop Arguments
 
 ### Runtime Flags
-These flags can be passed when launching the application  
+These flags can be passed when launching the application
 (or via `Right-click on the Equibop tray icon > Launch arguments`):
 
 ```bash
 --wayland
 ```
-> Forces the application to use the **Ozone Wayland** platform.  
-> Automatically enables:  
-> • `WaylandWindowDecorations`  
+> Forces the application to use the **Ozone Wayland** platform.
+> Automatically enables:
+> • `WaylandWindowDecorations`
 > • `VaapiVideoDecodeLinuxGL` (hardware acceleration)
 
 **Alternative (basic Wayland):**
@@ -50,7 +50,7 @@ These flags can be passed when launching the application
 ```bash
 --no-sandbox
 ```
-> Disables the Chromium sandbox.  
+> Disables the Chromium sandbox.
 > Commonly used when the application is executed as root.
 
 ```bash
@@ -64,14 +64,14 @@ These arguments are parsed during the build process:
 ```bash
 --dev
 ```
-> Enables development mode.  
-> • Disables code minification  
+> Enables development mode.
+> • Disables code minification
 > • Sets `IS_DEV` to `true`
 
 ```bash
 --watch
 ```
-> Starts a persistent build context that monitors file changes  
+> Starts a persistent build context that monitors file changes
 > and triggers automatic rebuilds.
 
 ### Persistent Configuration File
@@ -87,11 +87,11 @@ ${XDG_CONFIG_HOME}/equibop-flags.conf
 - Valid entries are appended to the execution command
 
 ## Installing
-Check the [Releases](https://github.com/Equicord/Equibop/releases) page
+Check the [Releases](https://github.com/BashOnZsh/Bashbop/releases) page
 
 OR
 
-Check The Downloads from the [website](https://equicord.org/download)
+Check The Downloads from the [website](https://bashcord.org/download)
 
 ### Linux
 
@@ -118,7 +118,7 @@ You need to have the following dependencies installed:
 Packaging will create builds in the dist/ folder
 
 ```sh
-git clone https://github.com/Equicord/Equibop
+git clone https://github.com/BashOnZsh/Bashbop
 cd Equibop
 
 # Install Dependencies

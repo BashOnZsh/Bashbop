@@ -1,4 +1,4 @@
-name: Update equicord.org Equibop version
+name: Update bashcord.org Bashbop version
 on:
     release:
         types:
@@ -7,7 +7,7 @@ jobs:
     update:
         runs-on: ubuntu-latest
         steps:
-            - name: Update public/version file in equicord.org repo
+            - name: Update public/version file in bashcord.org repository
               run: |
                   git config --global user.name "$USERNAME"
                   git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -16,9 +16,9 @@ jobs:
                   version="${{ github.event.release.tag_name }}"
                   echo "${version#v}" > public/version
                   git add public/version
-                  git commit -m "Update Equibop version to ${{ github.event.release.tag_name }}"
+                  git commit -m "Update Bashbop version to ${{ github.event.release.tag_name }}"
                   git push https://$USERNAME:$API_TOKEN@github.com/$GH_REPO.git
               env:
                   API_TOKEN: ${{ secrets.ETOKEN }}
-                  GH_REPO: Equicord/Equibite
+                  GH_REPO: BashOnZsh/Bashcord.org
                   USERNAME: GitHub-Actions
