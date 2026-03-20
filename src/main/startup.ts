@@ -115,7 +115,9 @@ function init() {
     app.whenReady().then(async () => {
         if (process.platform === "win32") app.setAppUserModelId("org.bashonzsh.bashbop");
 
-        await resyncExternalSettingsOnStartup();
+        if (Settings.store.resyncExternalSettingsOnStartup !== false) {
+            await resyncExternalSettingsOnStartup();
+        }
 
         registerScreenShareHandler();
         registerMediaPermissionsHandler();

@@ -41,6 +41,12 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
     "System Startup & Performance": [
         AutoStartToggle,
         {
+            key: "resyncExternalSettingsOnStartup",
+            title: "Resync External Settings on Startup",
+            description: "Import settings from Equicord/Vencord on every app start",
+            defaultValue: true
+        },
+        {
             key: "hardwareAcceleration",
             title: "Hardware Acceleration",
             description: "Enable hardware acceleration",

@@ -17,6 +17,7 @@ export interface Settings {
     staticTitle?: boolean;
     enableMenu?: boolean;
     disableSmoothScroll?: boolean;
+    resyncExternalSettingsOnStartup?: boolean;
     hardwareAcceleration?: boolean;
     hardwareVideoAcceleration?: boolean;
     arRPC?: boolean;
