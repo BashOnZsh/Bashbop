@@ -32,10 +32,7 @@ function copyDirectoryRecursive(sourceDir: string, targetDir: string) {
 
 export async function resyncExternalSettingsOnStartup() {
     const appDataDir = app.getPath("appData");
-    const sourceCandidates = [
-        join(appDataDir, "Equicord", "settings"),
-        join(appDataDir, "Vencord", "settings")
-    ];
+    const sourceCandidates = [join(appDataDir, "Equicord", "settings"), join(appDataDir, "Vencord", "settings")];
 
     const sourceDir = sourceCandidates.find(existsSync);
     if (!sourceDir) return;
