@@ -1,48 +1,75 @@
-# Equibop [<img src="/static/icon.png" width="225" align="right" alt="Equibop">](https://github.com/BashOnZsh/Bashbop)
+# [<img src="/static/icon.png" width="40" align="left" alt="Bashbop">](https://github.com/BashOnZsh/Bashbop) Bashbop
+
+Bashbop est un client Discord Desktop basé sur Vesktop, avec l'ecosysteme Bashcord preinstalle.
 
 [![Bashcord](https://img.shields.io/badge/Bashcord-grey?style=flat)](https://github.com/BashOnZsh/Bashcord)
 [![Tests](https://github.com/BashOnZsh/Bashbop/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/BashOnZsh/Bashbop/actions/workflows/test.yml)
 [![Discord](https://img.shields.io/discord/1173279886065029291.svg?color=768AD4&label=Discord&logo=discord&logoColor=white)](https://bashcord.org/discord)
 
-Equibop is a fork of [Vesktop](https://github.com/Vencord/Vesktop).
+## A propos de Bashbop
 
-You can join our [discord server](https://bashcord.org/discord) for commits, changes, chat or even support.<br></br>
+Bashbop vise une experience Discord Desktop rapide et propre, avec:
 
-**Main features**:
-- Bashcord preinstalled
-- Much more lightweight and faster than the official Discord app
-- Linux Screenshare with sound & wayland
-- Much better privacy, since Discord has no access to your system
+- Plugins Bashcord charges automatiquement
+- Integrations Linux utiles (screenshare son, Wayland, tray)
+- Build et packaging multiplateforme via Bun + Electron Builder
+- Reglages et runtime separes du client Discord officiel
 
-**Extra included changes**
+## Fonctionnalites
 
-- Tray Customization with voice detection and notification badges
-- Command-line flags to toggle microphone and deafen status (Linux)
-- Custom Arguments from [this PR](https://github.com/BashOnZsh/Bashbop/pull/46)
-- arRPC-bun with debug logging support https://github.com/Creationsss/arrpc-bun
+- Bashcord preinstalle
+- Demarrage et UI legers
+- Linux screenshare avec son + Wayland
+- Personnalisation du tray (badges, status voix)
+- Arguments de lancement et flags persistants
+- Support arRPC-bun avec logs debug
 
-**Linux Note**:
+## Plugins et mises a jour
 
-- You can use the `--toggle-mic` & `--toggle-deafen` flags to toggle your microphone and deafen status from the terminal. These can be bound to keyboard shortcuts at the system level.
+Bashbop telecharge et utilise le bundle Bashcord au format asar:
 
-**Not fully Supported**:
-- Global Keybinds (Windows/macOS - use command-line flags on Linux instead)
+```text
+https://github.com/BashOnZsh/Bashcord/releases/download/latest/bashbop.asar
+```
 
-# Equibop Arguments
+Au runtime, ce bundle fournit les plugins disponibles dans l'application.
 
-### Runtime Flags
-These flags can be passed when launching the application
-(or via `Right-click on the Equibop tray icon > Launch arguments`):
+## Installation
+
+### Binaries
+
+- Releases GitHub: https://github.com/BashOnZsh/Bashbop/releases
+- Site: https://bashcord.org/download
+
+### Linux
+
+[![Equibop](https://img.shields.io/badge/AVAILABLE_ON_THE_AUR-333232?style=for-the-badge&logo=arch-linux&logoColor=0F94D2&labelColor=%23171717)](https://aur.archlinux.org/packages?O=0&K=equibop)
+
+Packages communautaires (non officiels):
+
+- Arch Linux: https://aur.archlinux.org/packages?K=equibop
+- Void Linux: https://void.creations.works/
+- NixOS: `nix-shell -p equibop`
+
+## Arguments Bashbop
+
+### Runtime flags
+
+Ces flags peuvent etre passes au lancement
+(ou via clic droit sur l'icone tray > Launch arguments):
 
 ```bash
 --wayland
 ```
-> Forces the application to use the **Ozone Wayland** platform.
-> Automatically enables:
-> • `WaylandWindowDecorations`
-> • `VaapiVideoDecodeLinuxGL` (hardware acceleration)
 
-**Alternative (basic Wayland):**
+Force la plateforme Ozone Wayland.
+Active aussi:
+
+- `WaylandWindowDecorations`
+- `VaapiVideoDecodeLinuxGL`
+
+Alternative basique:
+
 ```bash
 --enable-features=UseOzonePlatform --ozone-platform=wayland
 ```
@@ -50,100 +77,127 @@ These flags can be passed when launching the application
 ```bash
 --no-sandbox
 ```
-> Disables the Chromium sandbox.
-> Commonly used when the application is executed as root.
+
+Desactive le sandbox Chromium (souvent utile en root).
 
 ```bash
 --force_high_performance_gpu
 ```
-> Instructs the engine to prioritize the discrete (high-performance) GPU.
 
-### Development and Build Arguments
-These arguments are parsed during the build process:
+Priorise le GPU dedie.
+
+### Build flags
 
 ```bash
 --dev
 ```
-> Enables development mode.
-> • Disables code minification
-> • Sets `IS_DEV` to `true`
+
+Active le mode dev (pas de minification + `IS_DEV=true`).
 
 ```bash
 --watch
 ```
-> Starts a persistent build context that monitors file changes
-> and triggers automatic rebuilds.
 
-### Persistent Configuration File
-The launcher supports a flags file located at:
+Build en watch continu.
 
-```
+### Fichier de flags persistant
+
+```text
 ${XDG_CONFIG_HOME}/equibop-flags.conf
 ```
 
-**Rules:**
-- Empty lines are ignored
-- Lines starting with `#` are treated as comments
-- Valid entries are appended to the execution command
+Regles:
 
-## Installing
-Check the [Releases](https://github.com/BashOnZsh/Bashbop/releases) page
+- Les lignes vides sont ignorees
+- Les lignes commencant par `#` sont des commentaires
+- Les lignes valides sont ajoutees a la commande de lancement
 
-OR
+## Developpement
 
-Check The Downloads from the [website](https://bashcord.org/download)
+### Prerequis
 
-### Linux
+- Git
+- Bun (>= 1.3)
+- Node.js (recommande pour l'ecosysteme outils)
 
-[![Equibop](https://img.shields.io/badge/AVAILABLE_ON_THE_AUR-333232?style=for-the-badge&logo=arch-linux&logoColor=0F94D2&labelColor=%23171717)](https://aur.archlinux.org/packages?O=0&K=equibop)
-<br>
-<!-- <a href="https://flathub.org/apps/io.github.equicord.equibop">
-  <img src="https://flathub.org/api/badge?svg" alt="Download on Flathub" style="width:220px; height:auto;">
-</a> -->
+### Commandes utiles
 
-#### Community packages
-
-Below you can find unofficial packages created by the community. They are not officially supported by us, so before reporting issues, please first confirm the issue also happens on official builds. When in doubt, consult with their packager first. The AppImage should work on any distro that supports them, so I recommend you just use that instead!
-
-- Arch Linux: [Equibop on the Arch user repository](https://aur.archlinux.org/packages?K=equibop)
-- Void Linux: [Equibop on the Void repository](https://void.creations.works/)
-- NixOS: `nix-shell -p equibop`
-
-## Building from Source
-
-You need to have the following dependencies installed:
-- [Git](https://git-scm.com/downloads)
-- [Bun](https://bun.sh)
-
-Packaging will create builds in the dist/ folder
-
-```sh
-git clone https://github.com/BashOnZsh/Bashbop
-cd Equibop
-
-# Install Dependencies
+```bash
+# Installer les dependances
 bun install
 
-# Either run it without packaging
+# Build production
+bun run build
+
+# Build developpement
+bun run build:dev
+
+# Lancer l'application
 bun start
 
-# Or package (will build packages for your OS)
-bun package
+# Lancer en dev
+bun run start:dev
 
-# Or only build the Linux Pacman package
-bun package --linux pacman
+# Lancer avec watch
+bun run start:watch
 
-# Or package to a directory only
-bun package:dir
+# Lint + tests types
+bun run test
 ```
 
-## Building LibVesktop from Source
+### Build depuis les sources
 
-This is a small C++ helper library Equibop uses on Linux to emit D-Bus events. By default, prebuilt binaries for x64 and arm64 are used.
+```bash
+git clone https://github.com/BashOnZsh/Bashbop
+cd Bashbop
+bun install
+bun start
+```
 
-If you want to build it from source:
-1. Install build dependencies:
-    - Debian/Ubuntu: `apt install build-essential python3 curl pkg-config libglib2.0-dev`
-    - Fedora: `dnf install @c-development @development-tools python3 curl pkgconf-pkg-config glib2-devel`
-2. Run `bun buildLibVesktop`
-3. From now on, building Equibop will use your own build
+### Packaging
+
+```bash
+# Packages pour ton OS
+bun run package
+
+# Build dossier sans installer
+bun run package:dir
+```
+
+## Build LibVesktop (Linux)
+
+LibVesktop est une librairie C++ utilisee pour les evenements D-Bus.
+Par defaut, des binaires prebuild x64/arm64 sont utilises.
+
+Pour compiler localement:
+
+1. Installer les dependances:
+   - Debian/Ubuntu: `apt install build-essential python3 curl pkg-config libglib2.0-dev`
+   - Fedora: `dnf install @c-development @development-tools python3 curl pkgconf-pkg-config glib2-devel`
+2. Lancer:
+
+```bash
+bun run buildLibVesktop
+```
+
+## Contribution
+
+1. Fork du repository
+2. Creer une branche: `git checkout -b feature/ma-feature`
+3. Commit: `git commit -m "feat: ma feature"`
+4. Push
+5. Ouvrir une Pull Request
+
+## Avertissement
+
+Comme les autres clients modifies, Bashbop peut contrevenir aux CGU de Discord.
+Utilise-le en connaissance de cause et evite les plugins a comportement abusif.
+
+## Support
+
+- Discord: https://bashcord.org/discord
+- Repository: https://github.com/BashOnZsh/Bashbop
+
+## Licence
+
+GPL-3.0-or-later. Voir LICENSE.

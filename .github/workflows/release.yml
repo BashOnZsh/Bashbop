@@ -9,11 +9,16 @@ on:
 permissions:
     contents: write
 
+concurrency:
+    group: release-${{ github.ref }}
+    cancel-in-progress: false
+
 jobs:
     release:
         runs-on: ${{ matrix.os }}
 
         strategy:
+            fail-fast: false
             matrix:
                 os: [macos-latest, ubuntu-latest, windows-latest]
                 include:
@@ -40,21 +45,102 @@ jobs:
 
             - name: Run Electron Builder
               if: ${{ matrix.platform != 'mac' }}
-              run: |
-                  bun run electron-builder --${{ matrix.platform }} --publish always
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: bun run electron-builder --${{ matrix.platform }} --publish never
 
-            - name: Run Electron Builder
+            - name: Determine macOS signing mode
               if: ${{ matrix.platform == 'mac' }}
-              run: |
-                  echo "$API_KEY" > apple.p8
-                  bun run electron-builder --${{ matrix.platform }} --publish always
+              id: mac_signing
+              shell: bash
               env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  CSC_LINK: ${{ secrets.APPLE_SIGNING_CERT }}
+                  APPLE_SIGNING_CERT: ${{ secrets.APPLE_SIGNING_CERT }}
+                  APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+                  APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+                  APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+              run: |
+                  set -e
+
+                  mode="unsigned"
+                  cert_link=""
+
+                  if [ -n "$APPLE_SIGNING_CERT" ] && [ -n "$APPLE_API_KEY" ] && [ -n "$APPLE_API_KEY_ID" ] && [ -n "$APPLE_API_ISSUER" ]; then
+                      if [[ "$APPLE_SIGNING_CERT" =~ ^https?:// ]]; then
+                          mode="signed"
+                          cert_link="$APPLE_SIGNING_CERT"
+                      elif [[ "$APPLE_SIGNING_CERT" == /* ]] && [ -f "$APPLE_SIGNING_CERT" ]; then
+                          mode="signed"
+                          cert_link="$APPLE_SIGNING_CERT"
+                      else
+                          if echo "$APPLE_SIGNING_CERT" | base64 --decode > apple_signing_cert.p12 2>/dev/null && [ -s apple_signing_cert.p12 ]; then
+                              mode="signed"
+                              cert_link="$PWD/apple_signing_cert.p12"
+                          fi
+                      fi
+                  fi
+
+                  echo "mode=$mode" >> "$GITHUB_OUTPUT"
+                  echo "cert_link=$cert_link" >> "$GITHUB_OUTPUT"
+
+            - name: Run Electron Builder (macOS signed)
+              if: ${{ matrix.platform == 'mac' && steps.mac_signing.outputs.mode == 'signed' }}
+              shell: bash
+              run: |
+                  printf "%s" "$API_KEY" > apple.p8
+                  bun run electron-builder --${{ matrix.platform }} --publish never
+              env:
+                  CSC_LINK: ${{ steps.mac_signing.outputs.cert_link }}
                   CSC_KEY_PASSWORD: ${{ secrets.APPLE_SIGNING_CERT_PASSWORD }}
                   API_KEY: ${{ secrets.APPLE_API_KEY }}
                   APPLE_API_KEY: apple.p8
                   APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
                   APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+
+            - name: Run Electron Builder (macOS unsigned fallback)
+              if: ${{ matrix.platform == 'mac' && steps.mac_signing.outputs.mode != 'signed' }}
+              shell: bash
+              run: bun run electron-builder --${{ matrix.platform }} --publish never --config.mac.identity=null --config.mac.notarize=false
+              env:
+                  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+            - name: Ensure rolling latest release exists
+              shell: bash
+              run: |
+                  gh release view latest >/dev/null 2>&1 || gh release create latest --title "Latest" --notes "Rolling latest build" --latest
+                  gh release edit latest --latest --title "Latest"
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload Linux assets to latest
+              if: ${{ matrix.platform == 'linux' }}
+              shell: bash
+              run: |
+                  for file in dist/*.AppImage dist/*.deb dist/*.rpm dist/*.tar.gz dist/*linux*.yml dist/*.blockmap; do
+                      if [ -f "$file" ]; then
+                          gh release upload latest "$file" --clobber
+                      fi
+                  done
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload macOS assets to latest
+              if: ${{ matrix.platform == 'mac' }}
+              shell: bash
+              run: |
+                  for file in dist/*.dmg dist/*.zip dist/*mac*.yml dist/*.blockmap; do
+                      if [ -f "$file" ]; then
+                          gh release upload latest "$file" --clobber
+                      fi
+                  done
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload Windows assets to latest
+              if: ${{ matrix.platform == 'windows' }}
+              shell: pwsh
+              run: |
+                  $patterns = @("dist/*.exe", "dist/*.zip", "dist/latest*.yml", "dist/*.blockmap")
+                  $files = Get-ChildItem -Path $patterns -File -ErrorAction SilentlyContinue
+                  foreach ($file in $files) {
+                      gh release upload latest $file.FullName --clobber
+                  }
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
