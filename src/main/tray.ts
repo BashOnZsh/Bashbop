@@ -220,13 +220,13 @@ export async function initTray(win: BrowserWindow, setIsQuitting: (val: boolean)
 
                 const pixmap = await getCachedTrayPixmap(trayVariant);
                 nativeSNI.setStatusNotifierIcon(pixmap);
-                nativeSNI.setStatusNotifierTitle("Equibop");
+                nativeSNI.setStatusNotifierTitle("Bashbop");
 
                 const menuItems = [
                     { id: 1, label: win.isVisible() ? "Hide" : "Open", enabled: true, visible: true },
                     { id: 2, label: "About", enabled: true, visible: true },
-                    { id: 3, label: "Repair Equicord", enabled: true, visible: true },
-                    { id: 4, label: "Reset Equibop", enabled: true, visible: true },
+                    { id: 3, label: "Repair Bashcord", enabled: true, visible: true },
+                    { id: 4, label: "Reset Bashbop", enabled: true, visible: true },
                     { id: 5, label: "Launch Arguments", enabled: true, visible: true },
                     {
                         id: 6,
@@ -262,7 +262,7 @@ export async function initTray(win: BrowserWindow, setIsQuitting: (val: boolean)
                         case 2: // about
                             createAboutWindow();
                             break;
-                        case 3: // repair equicord
+                        case 3: // repair bashcord
                             downloadVencordAsar().then(() => {
                                 setTimeout(() => {
                                     destroyTray();
@@ -271,7 +271,7 @@ export async function initTray(win: BrowserWindow, setIsQuitting: (val: boolean)
                                 }, 0);
                             });
                             break;
-                        case 4: // reset Equibop
+                        case 4: // reset Bashbop
                             clearData(win);
                             break;
                         case 5: // launch arguments
@@ -325,7 +325,7 @@ export async function initTray(win: BrowserWindow, setIsQuitting: (val: boolean)
             click: createAboutWindow
         },
         {
-            label: "Repair Equicord",
+            label: "Repair Bashcord",
             async click() {
                 await downloadVencordAsar();
                 destroyTray();
@@ -334,7 +334,7 @@ export async function initTray(win: BrowserWindow, setIsQuitting: (val: boolean)
             }
         },
         {
-            label: "Reset Equibop",
+            label: "Reset Bashbop",
             async click() {
                 await clearData(win);
             }
@@ -373,7 +373,7 @@ export async function initTray(win: BrowserWindow, setIsQuitting: (val: boolean)
     try {
         const initialImage = await getCachedTrayImage(trayVariant);
         tray = new Tray(initialImage);
-        tray.setToolTip("Equibop");
+        tray.setToolTip("Bashbop");
 
         if (isLinux) {
             tray.on("click", onTrayClick);

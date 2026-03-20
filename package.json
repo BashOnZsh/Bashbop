@@ -1,8 +1,8 @@
 {
-    "name": "equibop",
+    "name": "bashbop",
     "version": "3.1.9",
     "private": true,
-    "description": "Equibop is a custom Discord desktop app",
+    "description": "Bashbop is a custom Discord desktop app",
     "keywords": [],
     "homepage": "https://bashcord.org",
     "license": "GPL-3.0-or-later",
@@ -69,9 +69,10 @@
         "bun": ">=1.3.0"
     },
     "build": {
-        "appId": "org.equicord.equibop",
-        "productName": "Equibop",
-        "executableName": "equibop",
+        "appId": "org.bashonzsh.bashbop",
+        "productName": "Bashbop",
+        "executableName": "bashbop",
+        "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
         "files": [
             "!*",
             "!node_modules",
@@ -124,13 +125,13 @@
             ],
             "desktop": {
                 "entry": {
-                    "Name": "Equibop",
+                    "Name": "Bashbop",
                     "GenericName": "Internet Messenger",
                     "Type": "Application",
                     "Categories": "Network;InstantMessaging;Chat;",
-                    "Keywords": "discord;vencord;electron;chat;equibop",
+                    "Keywords": "discord;vencord;electron;chat;bashbop",
                     "MimeType": "x-scheme-handler/discord",
-                    "StartupWMClass": "equibop"
+                    "StartupWMClass": "bashbop"
                 }
             }
         },

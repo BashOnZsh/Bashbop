@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=Equibop
+Name=Bashbop
 GenericName=Internet Messenger
 Type=Application
-Exec=equibop %U
-Icon=org.equicord.equibop
+Exec=bashbop %U
+Icon=org.bashonzsh.bashbop
 Categories=Network;InstantMessaging;Chat;
-Keywords=discord;vencord;electron;chatequibop;
+Keywords=discord;vencord;electron;chat;bashbop;
 MimeType=x-scheme-handler/discord;
-StartupWMClass=equibop
+StartupWMClass=bashbop

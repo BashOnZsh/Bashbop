@@ -62,7 +62,7 @@ const options = {
     repair: {
         type: "boolean",
         short: "r",
-        description: "Re-download Equicord and restart"
+        description: "Re-download Bashcord and restart"
     }
 } satisfies Record<string, Option>;
 
@@ -81,7 +81,7 @@ const extraOptions = {
     "ozone-platform": {
         hidden: process.platform !== "linux",
         type: "string",
-        description: "Whether to run Equibop in Wayland or X11 (XWayland)",
+        description: "Whether to run Bashbop in Wayland or X11 (XWayland)",
         options: ["x11", "wayland"]
     }
 } satisfies Record<string, Option>;
@@ -103,11 +103,11 @@ export async function checkCommandLineForRepair() {
 
     const { State } = await import("./settings");
     if (State.store.equicordDir) {
-        console.error("Cannot repair: using custom Equicord directory. Remove it in settings first.");
+        console.error("Cannot repair: using custom Bashcord directory. Remove it in settings first.");
         process.exit(1);
     }
 
-    console.log("Repairing Equicord...");
+    console.log("Repairing Bashcord...");
     const { downloadVencordAsar } = await import("./utils/vencordLoader");
     await downloadVencordAsar();
     console.log("Repair complete.");
@@ -119,13 +119,13 @@ export function checkCommandLineForHelpOrVersion() {
     const { help, version } = CommandLine.values;
 
     if (version) {
-        console.log(`Equibop v${app.getVersion()}`);
+        console.log(`Bashbop v${app.getVersion()}`);
         app.exit(0);
     }
 
     if (help) {
         const base = stripIndent`
-            Equibop v${app.getVersion()}
+            Bashbop v${app.getVersion()}
 
             Usage: ${basename(process.execPath)} [options] [url]
 
@@ -189,7 +189,7 @@ function checkCommandLineForToggleCommands() {
         app.exit(0);
     }
 
-    console.error("Equibop is not running. Toggle commands require a running instance.");
+    console.error("Bashbop is not running. Toggle commands require a running instance.");
     app.exit(1);
 }
 
@@ -228,10 +228,10 @@ function checkForSecondInstance() {
 
     if (!app.requestSingleInstanceLock({ IS_DEV })) {
         if (IS_DEV) {
-            console.log("Equibop is already running. Quitting previous instance...");
+            console.log("Bashbop is already running. Quitting previous instance...");
             return;
         } else {
-            console.log("Equibop is already running. Quitting...");
+            console.log("Bashbop is already running. Quitting...");
             app.exit(0);
         }
     }
