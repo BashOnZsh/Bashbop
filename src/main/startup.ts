@@ -17,7 +17,6 @@ import { createWindows } from "./mainWindow";
 import { registerMediaPermissionsHandler } from "./mediaPermissions";
 import { registerScreenShareHandler } from "./screenShare";
 import { Settings, State } from "./settings";
-import { resyncExternalSettingsOnStartup } from "./utils/resyncExternalSettings";
 import { setAsDefaultProtocolClient } from "./utils/setAsDefaultProtocolClient";
 import { isDeckGameMode } from "./utils/steamOS";
 
@@ -114,10 +113,6 @@ function init() {
 
     app.whenReady().then(async () => {
         if (process.platform === "win32") app.setAppUserModelId("org.bashonzsh.bashbop");
-
-        if (Settings.store.resyncExternalSettingsOnStartup !== false) {
-            await resyncExternalSettingsOnStartup();
-        }
 
         registerScreenShareHandler();
         registerMediaPermissionsHandler();
