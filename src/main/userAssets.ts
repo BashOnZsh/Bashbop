@@ -33,10 +33,8 @@ const DEFAULT_ASSETS: Record<UserAssetType, string> = {
     tray:
         process.platform === "darwin"
             ? "tray/trayTemplate.png"
-            : process.platform === "win32"
-              ? "icon.ico"
-              : "tray/tray.png",
-    trayUnread: "tray/trayUnread.png",
+            : "tray/tray.png",
+    trayUnread: "tray/tray.png",
     traySpeaking: "tray/speaking.png",
     trayIdle: "tray/idle.png",
     trayMuted: "tray/muted.png",
