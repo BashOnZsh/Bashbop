@@ -111,7 +111,7 @@ await Promise.all([
     }),
     createContext({
         ...CommonOpts,
-        globalName: "Equibop",
+        globalName: "Bashbop",
         entryPoints: ["src/renderer/index.ts"],
         outfile: "dist/js/renderer.js",
         format: "iife",

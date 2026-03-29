@@ -36,8 +36,8 @@ function openDeveloperOptionsModal(settings: Settings) {
 
             <ModalContent>
                 <div style={{ padding: "1em 0" }}>
-                    <Heading tag="h5">Equicord Location</Heading>
-                    <EquicordLocationPicker settings={settings} />
+                    <Heading tag="h5">Bashcord Location</Heading>
+                    <BashcordLocationPicker settings={settings} />
 
                     <Heading tag="h5" className={Margins.top16}>
                         Debugging
@@ -54,15 +54,15 @@ function openDeveloperOptionsModal(settings: Settings) {
     ));
 }
 
-const EquicordLocationPicker: SettingsComponent = ({ settings }) => {
+const BashcordLocationPicker: SettingsComponent = ({ settings }) => {
     const forceUpdate = useForceUpdater();
-    const usingCustomEquicordDir = VesktopNative.fileManager.isUsingCustomVencordDir();
+    const usingCustomBashcordDir = VesktopNative.fileManager.isUsingCustomVencordDir();
 
     return (
         <>
             <Paragraph>
-                Equicord files are loaded from{" "}
-                {usingCustomEquicordDir ? (
+                Bashcord files are loaded from{" "}
+                {usingCustomBashcordDir ? (
                     <TextButton
                         variant="link"
                         onClick={e => {

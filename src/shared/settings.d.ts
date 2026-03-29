@@ -72,6 +72,8 @@ export interface State {
     steamOSLayoutVersion?: number;
     linuxAutoStartEnabled?: boolean;
 
+    bashcordDir?: string;
+    // Legacy key kept for backward compatibility with existing user state files.
     equicordDir?: string;
 
     launchArguments?: string;

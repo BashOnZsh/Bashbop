@@ -93,7 +93,7 @@ Build en watch continu.
 ### Fichier de flags persistant
 
 ```text
-${XDG_CONFIG_HOME}/equibop-flags.conf
+${XDG_CONFIG_HOME}/bashbop-flags.conf
 ```
 
 Regles:

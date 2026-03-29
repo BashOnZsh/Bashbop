@@ -101,15 +101,15 @@ handle(IpcEvents.RELAUNCH, async () => {
     app.exit();
 });
 
-handleSync(IpcEvents.IS_USING_CUSTOM_VENCORD_DIR, () => !!State.store.equicordDir);
+handleSync(IpcEvents.IS_USING_CUSTOM_VENCORD_DIR, () => !!(State.store.bashcordDir ?? State.store.equicordDir));
 handle(IpcEvents.SHOW_CUSTOM_VENCORD_DIR, async () => {
-    const { equicordDir } = State.store;
-    if (!equicordDir) return;
+    const customBashcordDir = State.store.bashcordDir ?? State.store.equicordDir;
+    if (!customBashcordDir) return;
 
-    const stats = await stat(equicordDir);
+    const stats = await stat(customBashcordDir);
     if (!stats.isDirectory()) return;
 
-    shell.openPath(equicordDir);
+    shell.openPath(customBashcordDir);
 });
 
 function getWindow(e: IpcMainInvokeEvent, key?: string) {
@@ -152,6 +152,7 @@ handle(IpcEvents.SPELLCHECK_ADD_TO_DICTIONARY, (e, word: string) => {
 
 handle(IpcEvents.SELECT_VENCORD_DIR, async (_e, value?: null) => {
     if (value === null) {
+        delete State.store.bashcordDir;
         delete State.store.equicordDir;
         return "ok";
     }
@@ -164,7 +165,8 @@ handle(IpcEvents.SELECT_VENCORD_DIR, async (_e, value?: null) => {
     const dir = res.filePaths[0];
     if (!isValidVencordInstall(dir)) return "invalid";
 
-    State.store.equicordDir = dir;
+    State.store.bashcordDir = dir;
+    delete State.store.equicordDir;
 
     return "ok";
 });

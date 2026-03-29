@@ -5,20 +5,61 @@
  */
 
 import { app } from "electron";
-import { existsSync, mkdirSync } from "fs";
+import { cpSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { dirname, join } from "path";
 
 import { CommandLine } from "./cli";
 
 const equibopDir = dirname(process.execPath);
+const isDev = process.argv.includes("--dev");
+const suffix = isDev ? "dev" : "";
+
+const customDataDir = process.env.BASHCORD_USER_DATA_DIR ?? process.env.DATA_DIR;
+const legacyCustomDataDir = process.env.EQUICORD_USER_DATA_DIR;
+const dataParentDir = join(app.getPath("userData"), "..");
 
 export const PORTABLE =
     process.platform === "win32" &&
     !process.execPath.toLowerCase().endsWith("electron.exe") &&
     !existsSync(join(equibopDir, "Uninstall Equibop.exe"));
 
+function copyDirContents(source: string, target: string) {
+    mkdirSync(target, { recursive: true });
+
+    for (const entry of readdirSync(source)) {
+        cpSync(join(source, entry), join(target, entry), {
+            recursive: true,
+            force: false,
+            errorOnExist: false
+        });
+    }
+}
+
+function migrateLegacyData(targetDir: string) {
+    const legacyDirs = [
+        join(dataParentDir, "Equicord", suffix),
+        join(dataParentDir, "EquicordData", suffix),
+        join(dataParentDir, "Equibop", suffix),
+        join(dataParentDir, "EquibopData", suffix),
+        legacyCustomDataDir
+    ].filter(Boolean) as string[];
+
+    for (const legacyDir of legacyDirs) {
+        if (!existsSync(legacyDir) || legacyDir === targetDir) continue;
+
+        try {
+            copyDirContents(legacyDir, targetDir);
+            console.log(`[Bashbop] Migrated data from ${legacyDir} to ${targetDir}`);
+        } catch (err) {
+            console.error(`[Bashbop] Failed to migrate data from ${legacyDir}:`, err);
+        }
+    }
+}
+
 export const DATA_DIR =
-    process.env.EQUICORD_USER_DATA_DIR || (PORTABLE ? join(equibopDir, "Data") : join(app.getPath("userData")));
+    customDataDir ?? legacyCustomDataDir ?? (PORTABLE ? join(equibopDir, "Data") : join(app.getPath("userData")));
+
+migrateLegacyData(DATA_DIR);
 
 mkdirSync(DATA_DIR, { recursive: true });
 
@@ -31,7 +72,7 @@ export const VENCORD_QUICKCSS_FILE = join(VENCORD_SETTINGS_DIR, "quickCss.css");
 export const VENCORD_SETTINGS_FILE = join(VENCORD_SETTINGS_DIR, "settings.json");
 export const VENCORD_THEMES_DIR = join(DATA_DIR, "themes");
 
-export const USER_AGENT = `Equibop/${app.getVersion()} (https://github.com/BashOnZsh/Bashbop)`;
+export const USER_AGENT = `Bashbop/${app.getVersion()} (https://github.com/BashOnZsh/Bashbop)`;
 
 // dimensions shamelessly stolen from Discord Desktop :3
 export const MIN_WIDTH = 940;

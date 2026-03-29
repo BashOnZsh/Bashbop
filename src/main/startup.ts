@@ -22,7 +22,14 @@ import { isDeckGameMode } from "./utils/steamOS";
 
 console.log("Bashbop v" + app.getVersion());
 
+process.env.BASHCORD_USER_DATA_DIR = DATA_DIR;
 process.env.EQUICORD_USER_DATA_DIR = DATA_DIR;
+process.env.DATA_DIR = DATA_DIR;
+
+if (State.store.equicordDir && !State.store.bashcordDir) {
+    State.store.bashcordDir = State.store.equicordDir;
+    delete State.store.equicordDir;
+}
 
 const isLinux = process.platform === "linux";
 

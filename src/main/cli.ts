@@ -102,7 +102,7 @@ export async function checkCommandLineForRepair() {
     if (!repair) return false;
 
     const { State } = await import("./settings");
-    if (State.store.equicordDir) {
+    if (State.store.bashcordDir ?? State.store.equicordDir) {
         console.error("Cannot repair: using custom Bashcord directory. Remove it in settings first.");
         process.exit(1);
     }

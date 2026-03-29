@@ -30,17 +30,17 @@ VesktopLogger.log(`Bashbop v${VesktopNative.app.getVersion()}`);
 const { customEntries, customSections } = Vencord.Plugins.plugins.Settings as any as typeof SettingsPlugin;
 
 customEntries.push({
-    key: "equicord_equibop_settings",
+    key: "bashcord_bashbop_settings",
     title: "Bashbop Settings",
     Component: SettingsUi,
     Icon: VesktopSettingsIcon
 });
 
 customSections.push(() => ({
-    section: "EquibopSettings",
+    section: "BashbopSettings",
     label: "Bashbop Settings",
     element: SettingsUi,
-    className: "vc-equibop-settings"
+    className: "vc-bashbop-settings"
 }));
 
 VesktopNative.voice.onToggleSelfMute(() => VoiceActions.toggleSelfMute());
